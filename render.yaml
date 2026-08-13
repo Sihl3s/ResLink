@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: reslink
+    runtime: docker
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: RESLINK_DATA_DIR
+        value: /tmp/reslink
