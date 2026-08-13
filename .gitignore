@@ -1,0 +1,33 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+[Dd]ebug/
+[Rr]elease/
+*.db
+*.db-shm
+*.db-wal
+
+## Android
+.gradle/
+**/build/
+local.properties
+*.iml
+.idea/
+.cxx/
+captures/
+*.apk
+*.ap_
+*.aab
+*.keystore
+!debug.keystore
+
+## OS / IDE
+.DS_Store
+Thumbs.db
+.vs/
+.vscode/
+*.swp
