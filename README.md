@@ -4,6 +4,21 @@
 
 A student-residence engagement prototype by **Dynamic Developers** (INSY72315).
 
+**Open the prototype:** [https://reslink.onrender.com](https://reslink.onrender.com)
+
+The first visit can take about a minute while the free host wakes up. Then sign in with one of the demo accounts:
+
+| Role | Email | Password |
+| --- | --- | --- |
+| Student | student@reslink.app | Student123! |
+| Residence Admin | admin@reslink.app | Admin123! |
+| Security | security@reslink.app | Security123! |
+| Maintenance | maintenance@reslink.app | Maintenance123! |
+
+Staff self-registration uses the access code `RESLINK-STAFF-2026`.
+
+The same API and accounts work in a local browser or in Android Studio. The emulator still talks to a local API at `http://10.0.2.2:5180/`. To point a physical phone at the live backend, set `API_BASE_URL` in `android/app/build.gradle.kts` to `https://reslink.onrender.com/`.
+
 ResLink is a digital platform for student accommodation. Students, residence administrators, security personnel, and maintenance teams share one application backed by a C# web API. Each role has its own sign-up path, home screen, and permissions.
 
 The prototype can be opened in a web browser or in the Android app. Both use the same API and the same demo accounts. The interface is a light, high-whitespace layout with forest-green ResLink branding. Each role sees a different menu and home screen.
@@ -126,7 +141,7 @@ The following are simulated so the prototype can be demonstrated without extra h
 - push notifications (alerts appear in the in-app notification list)
 - payments and real voucher fulfilment
 - physical QR scanners (events show a demo check-in code)
-- cloud hosting (the API and SQLite database run locally)
+- persistent cloud storage (the live Render service uses SQLite on an ephemeral disk, so a sleep/restart reseeds the demo data)
 
 ## Project structure
 
