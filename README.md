@@ -1,4 +1,6 @@
-# ResLink
+# Res_Link
+
+**A Digital Ecosystem for Students**
 
 **Connecting Student Living Through Technology**
 
