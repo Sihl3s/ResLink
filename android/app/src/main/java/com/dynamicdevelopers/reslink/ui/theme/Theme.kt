@@ -1,5 +1,7 @@
 package com.dynamicdevelopers.reslink.ui.theme
 
+// Light Material 3 scheme uses the same forest-green brand as the browser UI (Android Developers, 2025b).
+
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.Typography

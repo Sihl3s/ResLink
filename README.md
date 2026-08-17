@@ -154,3 +154,33 @@ ResLink/
   android/                      Kotlin Jetpack Compose application
   README.md                     This guide
 ```
+
+## References
+
+Android Developers (2025a) *Jetpack Compose*. Available at: https://developer.android.com/compose (Accessed: 17 August 2026).
+
+Android Developers (2025b) *Material Design 3 in Compose*. Available at: https://developer.android.com/develop/ui/compose/designsystems/material3 (Accessed: 17 August 2026).
+
+MDN (2025) *Using the Fetch API*. Available at: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch (Accessed: 17 August 2026).
+
+Microsoft (2024) *PasswordHasher of ASP.NET Core Identity*. Available at: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.passwordhasher-1 (Accessed: 17 August 2026).
+
+Microsoft (2025a) *Overview of ASP.NET Core*. Available at: https://learn.microsoft.com/aspnet/core/introduction-to-aspnet-core?view=aspnetcore-9.0 (Accessed: 17 August 2026).
+
+Microsoft (2025b) *Authentication and authorization in ASP.NET Core*. Available at: https://learn.microsoft.com/aspnet/core/fundamentals/minimal-apis/security?view=aspnetcore-9.0 (Accessed: 17 August 2026).
+
+Microsoft (2025c) *SQLite EF Core database provider*. Available at: https://learn.microsoft.com/ef/core/providers/sqlite/ (Accessed: 17 August 2026).
+
+Microsoft (2025d) *Get started with Swashbuckle and ASP.NET Core*. Available at: https://learn.microsoft.com/aspnet/core/tutorials/getting-started-with-swashbuckle (Accessed: 17 August 2026).
+
+Microsoft (2025e) *Role-based authorization in ASP.NET Core*. Available at: https://learn.microsoft.com/aspnet/core/security/authorization/roles?view=aspnetcore-9.0 (Accessed: 17 August 2026).
+
+OpenAPI Initiative (2024) *OpenAPI Specification*. Available at: https://spec.openapis.org/oas/latest.html (Accessed: 17 August 2026).
+
+OWASP (2023) *Authentication cheat sheet*. Available at: https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html (Accessed: 17 August 2026).
+
+Render (2025) *Docker on Render*. Available at: https://render.com/docs/docker (Accessed: 17 August 2026).
+
+SQLite Consortium (2025) *About SQLite*. Available at: https://www.sqlite.org/about.html (Accessed: 17 August 2026).
+
+Square (2024) *Retrofit*. Available at: https://square.github.io/retrofit/ (Accessed: 17 August 2026).

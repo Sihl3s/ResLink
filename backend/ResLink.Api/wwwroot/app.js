@@ -1,4 +1,4 @@
-// Browser prototype: same JWT API as Android, role menus, and reversible demo actions.
+// Browser prototype: same JWT API as Android, with role menus (Microsoft, 2025b; MDN, 2025).
 const app = document.getElementById("app");
 const state = { user: JSON.parse(localStorage.getItem("reslink.user") || "null"), page: "home", filter: "All", tab: "overview" };
 
@@ -21,6 +21,7 @@ const navByRole = {
 };
 
 async function api(path, options = {}) {
+  // Fetch keeps the UI on the same origin as the API (MDN, 2025).
   const headers = { "Content-Type": "application/json", ...(options.headers || {}) };
   if (state.user?.token) headers.Authorization = `Bearer ${state.user.token}`;
   const res = await fetch(path, { ...options, headers });

@@ -16,7 +16,7 @@ public class CommunityController(
     CurrentUser current,
     PointsService points) : ControllerBase
 {
-    // Join/leave and redeem/cancel keep study groups and rewards reversible in a demo.
+    // Join/leave and redeem/cancel keep study groups and rewards reversible in a demo (Microsoft, 2025a).
     [HttpGet("api/study-groups")]
     [Authorize(Roles = $"{Roles.Student},{Roles.Admin}")]
     public async Task<ActionResult<IReadOnlyList<StudyGroupDto>>> Groups()
@@ -131,7 +131,7 @@ public class CommunityController(
         return NoContent();
     }
 
-    // Refunds points and restocks the catalogue so a redeem can be undone.
+    // Refunds points and restocks the catalogue so a redeem can be undone (Microsoft, 2025a).
     [HttpPost("api/rewards/redemptions/{id:guid}/cancel")]
     [Authorize(Roles = Roles.Student)]
     public async Task<IActionResult> CancelRedemption(Guid id)

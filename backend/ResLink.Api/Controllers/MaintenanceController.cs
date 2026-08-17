@@ -12,7 +12,7 @@ namespace ResLink.Api.Controllers;
 [ApiController]
 [Authorize]
 [Route("api/maintenance")]
-// Students cancel their own open ticket; staff can move status forward or back to Open.
+// Students cancel their own open ticket; staff can move status forward or back to Open (Microsoft, 2025e).
 public class MaintenanceController(
     AppDbContext db,
     CurrentUser current,

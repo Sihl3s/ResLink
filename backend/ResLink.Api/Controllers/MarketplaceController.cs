@@ -13,7 +13,7 @@ namespace ResLink.Api.Controllers;
 [Route("api/marketplace")]
 public class MarketplaceController(AppDbContext db, CurrentUser current) : ControllerBase
 {
-    // Sold / unsold are reversible so a listing is never stuck after a demo tap.
+    // Sold / unsold are reversible so a listing is never stuck after a demo tap (Microsoft, 2025a).
     [HttpGet]
     [Authorize(Roles = $"{Roles.Student},{Roles.Admin}")]
     public async Task<ActionResult<IReadOnlyList<MarketplaceItemDto>>> List()

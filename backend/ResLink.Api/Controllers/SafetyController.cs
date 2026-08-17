@@ -11,7 +11,7 @@ namespace ResLink.Api.Controllers;
 
 [ApiController]
 [Authorize]
-// Panic and noise can be withdrawn or reopened so a demo alert is not stuck Open.
+// Panic and noise can be withdrawn or reopened so a demo alert is not stuck Open (Microsoft, 2025e).
 public class SafetyController(
     AppDbContext db,
     CurrentUser current,
