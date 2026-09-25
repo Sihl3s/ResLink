@@ -50,6 +50,8 @@ import com.dynamicdevelopers.reslink.ui.theme.Page
 
 data class Tab(val route: String, val label: String, val icon: ImageVector)
 
+// Bottom navigation and role shells follow Jetpack Compose Navigation (Android Developers, 2025a).
+
 @Composable
 fun ResLinkNav(api: ResLinkApi, session: SessionStore) {
     val nav = rememberNavController()

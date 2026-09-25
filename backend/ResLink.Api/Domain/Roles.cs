@@ -1,5 +1,6 @@
 namespace ResLink.Api.Domain;
 
+// Role names match JWT claims consumed by [Authorize(Roles = ...)] (Microsoft, 2025e).
 public static class Roles
 {
     public const string Student = "Student";

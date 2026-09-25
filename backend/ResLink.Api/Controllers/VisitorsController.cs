@@ -42,7 +42,7 @@ public class VisitorsController(AppDbContext db, CurrentUser current) : Controll
         return Ok(new VisitorDto(visitor.Id, visitor.VisitorName, user.FullName, visitor.HostRoom, visitor.Purpose, visitor.Status, visitor.CreatedAt));
     }
 
-    // Check-out sets Departed; security can also put a visitor back to OnSite if needed.
+    // Check-out sets Departed; security can also put a visitor back to OnSite if needed (Microsoft, 2025e).
     [HttpPut("{id:guid}/status")]
     [Authorize(Roles = $"{Roles.Security},{Roles.Admin}")]
     public async Task<IActionResult> Update(Guid id, UpdateStatusRequest request)

@@ -1,5 +1,7 @@
 package com.dynamicdevelopers.reslink.ui.theme
 
+// Light Material 3 scheme matches the browser: ivory page, white cards, logo green (Android Developers, 2025b).
+
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.Typography
@@ -10,18 +12,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 val Forest = Color(0xFF2D6A4F)
-val ForestDark = Color(0xFF1B4332)
-val Mint = Color(0xFFE8F5E9)
-val Page = Color(0xFFF7F8F6)
+val ForestDark = Color(0xFF143D2E)
+val Mint = Color(0xFFE7F0EA)
+val Page = Color(0xFFF6F4EF)
 val CardWhite = Color(0xFFFFFFFF)
-val Ink = Color(0xFF1F2933)
-val Muted = Color(0xFF6B7280)
-val Danger = Color(0xFFDC2626)
+val Ink = Color(0xFF1C1917)
+val Muted = Color(0xFF78716C)
+val Brass = Color(0xFF8C734B)
+val Danger = Color(0xFF9F2D2D)
 
 private val Scheme = lightColorScheme(
     primary = Forest,
     onPrimary = Color.White,
-    secondary = ForestDark,
+    secondary = Brass,
     onSecondary = Color.White,
     background = Page,
     onBackground = Ink,

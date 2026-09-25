@@ -1,5 +1,7 @@
 package com.dynamicdevelopers.reslink.data
 
+// Retrofit maps HTTP verbs to Kotlin suspend functions for the ASP.NET API (Square, 2024).
+
 import com.dynamicdevelopers.reslink.BuildConfig
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory

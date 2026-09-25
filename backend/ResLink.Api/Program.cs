@@ -9,7 +9,7 @@ using ResLink.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// JWT + RBAC for the Android app and the browser UI served from wwwroot.
+// Controllers and JWT bearer auth follow the ASP.NET Core 9 pipeline (Microsoft, 2025a; Microsoft, 2025b).
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -41,7 +41,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// Local and test hosts keep their connection string. Render uses a writable folder; the seeder refills it after a free-tier restart.
+// Local SQLite for development; hosted runs use a writable folder (Microsoft, 2025c; SQLite Consortium, 2025).
 var hosted = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("RENDER"))
     || !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("PORT"));
 var dataDir = Environment.GetEnvironmentVariable("RESLINK_DATA_DIR");
@@ -68,6 +68,7 @@ builder.Services.AddScoped<CurrentUser>();
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<PointsService>();
 
+// Issuer, audience and signing-key checks match Microsoft's JWT bearer guidance (Microsoft, 2025b; OWASP, 2023).
 var jwt = builder.Configuration.GetSection("Jwt");
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -86,6 +87,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 builder.Services.AddAuthorization();
 
+// CORS is open for the prototype so the browser UI and emulator can share one API (Microsoft, 2025a).
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("Client", policy =>
@@ -101,7 +104,7 @@ using (var scope = app.Services.CreateScope())
     await DbSeeder.SeedAsync(db);
 }
 
-// Swagger stays at /swagger so the lecturer's live URL can open the prototype at /.
+// OpenAPI/Swagger documents the REST surface for marking (Microsoft, 2025d; OpenAPI Initiative, 2024).
 app.UseSwagger();
 app.UseSwaggerUI(options =>
 {

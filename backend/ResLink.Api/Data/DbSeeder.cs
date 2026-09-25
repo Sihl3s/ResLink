@@ -7,7 +7,7 @@ namespace ResLink.Api.Data;
 
 public static class DbSeeder
 {
-    // Fixed IDs keep demo logins and sample tickets stable across local and Azure resets.
+    // Fixed IDs keep demo logins stable across local and hosted SQLite resets (Microsoft, 2025c).
     public static readonly Guid ResidenceId = Guid.Parse("11111111-1111-1111-1111-111111111111");
     public static readonly Guid StudentId = Guid.Parse("22222222-2222-2222-2222-222222222222");
     public static readonly Guid AdminId = Guid.Parse("33333333-3333-3333-3333-333333333333");
@@ -21,7 +21,7 @@ public static class DbSeeder
 
     public static async Task SeedAsync(AppDbContext db)
     {
-        // Seed only on an empty database so a live Azure instance keeps lecturer-created accounts.
+        // Seed only on an empty database so a live host keeps lecturer-created accounts (Microsoft, 2025c).
         if (await db.Users.AnyAsync())
         {
             return;
@@ -49,7 +49,7 @@ public static class DbSeeder
         db.Residences.Add(residence);
         db.Users.AddRange(student, admin, security, maintenance, lena, sipho, priya, nomsa, james);
 
-        // Community feed plus admin announcements shown on every role dashboard.
+        // Community feed plus admin announcements shown on every role dashboard (Microsoft, 2025a).
         db.Posts.AddRange(
             new Post
             {

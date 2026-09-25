@@ -13,6 +13,7 @@ namespace ResLink.Api.Controllers;
 [Authorize]
 public class AdminController(AppDbContext db, CurrentUser current) : ControllerBase
 {
+    // Dashboard payload is role-specific so staff see pulse stats and students do not (Microsoft, 2025e).
     [HttpGet("api/dashboard")]
     public async Task<ActionResult<DashboardDto>> Dashboard()
     {

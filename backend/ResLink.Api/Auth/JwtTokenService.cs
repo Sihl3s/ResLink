@@ -8,6 +8,7 @@ namespace ResLink.Api.Auth;
 
 public class JwtTokenService(IConfiguration configuration)
 {
+    // Role is stored as a claim so [Authorize(Roles = ...)] can enforce RBAC (Microsoft, 2025e).
     public string CreateToken(AppUser user)
     {
         var jwt = configuration.GetSection("Jwt");

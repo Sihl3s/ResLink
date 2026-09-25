@@ -15,7 +15,7 @@ namespace ResLink.Api.Controllers;
 [Route("api/posts")]
 public class FeedController(AppDbContext db, CurrentUser current, PointsService points) : ControllerBase
 {
-    // Any signed-in role can read posts so Security and Maintenance see announcements.
+    // Any signed-in role can read posts so Security and Maintenance see announcements (Microsoft, 2025e).
     [HttpGet]
     public async Task<ActionResult<IReadOnlyList<PostDto>>> List()
     {
@@ -104,7 +104,7 @@ public class FeedController(AppDbContext db, CurrentUser current, PointsService 
         return NoContent();
     }
 
-    // Admin can moderate any post; students can remove only their own.
+    // Admin can moderate any post; students can remove only their own (Microsoft, 2025e).
     [HttpDelete("{id:guid}")]
     [Authorize(Roles = $"{Roles.Student},{Roles.Admin}")]
     public async Task<IActionResult> Delete(Guid id)

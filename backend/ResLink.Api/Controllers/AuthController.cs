@@ -18,6 +18,7 @@ public class AuthController(
     IConfiguration configuration,
     CurrentUser currentUser) : ControllerBase
 {
+    // Identity PasswordHasher stores a salted hash rather than the raw password (Microsoft, 2024; OWASP, 2023).
     private readonly PasswordHasher<AppUser> _hasher = new();
 
     [HttpGet("residences")]

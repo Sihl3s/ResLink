@@ -1,6 +1,7 @@
-// Browser prototype: same JWT API as Android, role menus, and reversible demo actions.
+// Browser prototype: same JWT API as Android, with role menus (Microsoft, 2025b; MDN, 2025).
 const app = document.getElementById("app");
-const state = { user: JSON.parse(localStorage.getItem("reslink.user") || "null"), page: "home", filter: "All", tab: "overview" };
+const state = { user: JSON.parse(localStorage.getItem("reslink.user") || "null"), page: "home", filter: "All", tab: "overview", menu: false, more: false };
+let sessionNotice = "";
 
 const navByRole = {
   Student: [
@@ -20,10 +21,39 @@ const navByRole = {
   ]
 };
 
+// Stroke icons share one weight so the chrome does not look illustrated (Material Design, 2025).
+function icon(name) {
+  const paths = {
+    home: '<path d="M4 11.5 12 4l8 7.5"/><path d="M6.5 10.5V20h11V10.5"/>',
+    community: '<path d="M5 6.5h14v8H8l-3 3z"/>',
+    events: '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3.5V7M16 3.5V7M4 10h16"/>',
+    market: '<path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6.5A3 3 0 0 1 12 3.5 3 3 0 0 1 15 6.5V8"/>',
+    groups: '<circle cx="9" cy="9" r="2.2"/><circle cx="15.5" cy="9.5" r="1.8"/><path d="M4.8 18c.4-2.4 2.2-3.6 4.2-3.6s3.8 1.2 4.2 3.6M13 14.6c1.3-.4 2.6-.2 3.6.8 1 1.2 1.3 2.6 1.4 2.6"/>',
+    maintenance: '<path d="M14.5 6.5a3.2 3.2 0 0 0-4.2 4.2L4.5 16.5 7.5 19.5l5.8-5.8a3.2 3.2 0 0 0 4.2-4.2L15 12l-3-3 2.5-2.5z"/>',
+    security: '<path d="M12 3.5 19 6.5v5.2c0 4.2-2.8 7.2-7 8.8-4.2-1.6-7-4.6-7-8.8V6.5z"/>',
+    rewards: '<rect x="4" y="10" width="16" height="9" rx="1.5"/><path d="M12 10v9M4 13.5h16M12 10c-1.4-2.2-4.2-2.4-4.2-.6S11 10 12 10zm0 0c1.4-2.2 4.2-2.4 4.2-.6S13 10 12 10z"/>',
+    profile: '<circle cx="12" cy="8.5" r="3"/><path d="M5.5 19.5c1-3 3.2-4.5 6.5-4.5s5.5 1.5 6.5 4.5"/>',
+    admin: '<path d="M4 12h16M12 4v16M6.5 6.5l11 11M17.5 6.5l-11 11"/>',
+    notifications: '<path d="M6 16.5h12l-1.2-2.2V10a4.8 4.8 0 0 0-9.6 0v4.3z"/><path d="M10 16.5a2 2 0 0 0 4 0"/>',
+    more: '<circle cx="6" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="18" cy="12" r="1.2"/>'
+  };
+  const d = paths[name] || paths.home;
+  return `<span class="ico-svg" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${d}</svg></span>`;
+}
+
+class SessionError extends Error {}
+
 async function api(path, options = {}) {
+  // Fetch keeps the UI on the same origin as the API (MDN, 2025).
   const headers = { "Content-Type": "application/json", ...(options.headers || {}) };
   if (state.user?.token) headers.Authorization = `Bearer ${state.user.token}`;
   const res = await fetch(path, { ...options, headers });
+  // A rejected token after a Render restart must drop the saved session (OWASP, 2023).
+  if (res.status === 401 && state.user?.token) {
+    save(null);
+    sessionNotice = "Your session ended. Sign in again to continue.";
+    throw new SessionError("Session expired");
+  }
   if (!res.ok) throw new Error((await res.text()) || `Request failed (${res.status})`);
   if (res.status === 204) return null;
   const text = await res.text();
@@ -50,32 +80,69 @@ const fmtDate = iso => {
   return d.toLocaleString(undefined, { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
 };
 
-function brand() {
-  return `<div class="brand-row"><img src="logo.png" alt="ResLink" /><div><strong>ResLink</strong><span>Student Living</span></div></div>`;
+function brand(light) {
+  return `<div class="brand-row${light ? " light" : ""}"><img src="logo.png" alt="ResLink" /><div><strong>ResLink</strong><span>Student Living</span></div></div>`;
+}
+
+function navButtons(nav) {
+  return nav.map(([id, label]) => `<button class="${state.page === id ? "active" : ""}" data-page="${id}">${icon(id)}<span>${label}</span></button>`).join("");
 }
 
 async function render() {
-  if (!state.user) { app.innerHTML = authHtml(); bindAuth(); return; }
+  // The sidebar is only shown once a token is stored (OWASP, 2023).
+  if (!state.user?.token) {
+    if (state.user) save(null);
+    app.innerHTML = authHtml();
+    bindAuth();
+    if (sessionNotice) {
+      const note = document.getElementById("auth-error");
+      if (note) note.textContent = sessionNotice;
+      sessionNotice = "";
+    }
+    return;
+  }
   const nav = navByRole[state.user.role] || navByRole.Student;
+  const primary = nav.slice(0, 4);
+  const extra = nav.slice(4);
   app.innerHTML = `
     <div class="shell">
-      <aside class="sidebar">
-        ${brand()}
-        <nav class="nav">${nav.map(([id, label]) => `<button class="${state.page === id ? "active" : ""}" data-page="${id}">${label}</button>`).join("")}</nav>
+      <header class="topbar">
+        ${brand(true)}
+        <button class="menu-btn" id="open-menu" aria-label="Open menu">${icon("more")}</button>
+      </header>
+      ${state.menu ? `<div class="scrim" id="scrim"></div>` : ""}
+      <aside class="sidebar${state.menu ? " open" : ""}">
+        ${brand(true)}
+        <nav class="nav">${navButtons(nav)}</nav>
         <div class="side-foot">
           <div class="user-line"><div class="avatar">${initial(state.user.fullName)}</div><div><b>${esc(state.user.fullName)}</b><small>${esc(state.user.role)}</small></div></div>
           <button class="signout" id="logout">Sign out</button>
         </div>
       </aside>
       <main class="main" id="main"></main>
+      <nav class="bottom-nav">
+        ${primary.map(([id, label]) => `<button class="${state.page === id ? "active" : ""}" data-page="${id}">${icon(id)}<span>${label.split(" ")[0]}</span></button>`).join("")}
+        <button id="more-btn" class="${extra.some(([id]) => id === state.page) ? "active" : ""}">${icon("more")}<span>More</span></button>
+      </nav>
+      ${state.more ? `<div class="more-sheet">${navButtons(extra)}</div>` : ""}
     </div>`;
-  document.querySelectorAll("[data-page]").forEach(b => b.onclick = () => { state.page = b.dataset.page; state.filter = "All"; render(); });
+  document.querySelectorAll("[data-page]").forEach(b => b.onclick = () => { state.page = b.dataset.page; state.filter = "All"; state.menu = false; state.more = false; render(); });
   document.getElementById("logout").onclick = () => { save(null); render(); };
+  const open = document.getElementById("open-menu");
+  if (open) open.onclick = () => { state.menu = true; state.more = false; render(); };
+  const scrim = document.getElementById("scrim");
+  if (scrim) scrim.onclick = () => { state.menu = false; render(); };
+  document.getElementById("more-btn").onclick = () => { state.more = !state.more; render(); };
   await draw();
 }
 
 function authHtml() {
-  return `<div class="auth-wrap"><div class="auth-card">
+  return `<div class="auth-wrap">
+    <section class="auth-hero">
+      <img class="auth-mark" src="logo.png" alt="ResLink" />
+      <div><h2>Residence life, in one place.</h2><p>Community, safety, and maintenance for students and staff.</p></div>
+    </section>
+    <div class="auth-panel"><div class="auth-card">
     ${brand()}
     <h1>Welcome back</h1>
     <p class="lead">Sign in to open the dashboard for your role.</p>
@@ -100,7 +167,7 @@ function authHtml() {
       <label>Residence<select id="t-res"></select></label>
       <p class="error" id="t-error"></p><button class="btn" id="reg-t">Create staff account</button>
     </div>
-  </div></div>`;
+  </div></div></div>`;
 }
 
 function bindAuth() {
@@ -128,7 +195,10 @@ async function draw() {
   try {
     const pages = { home, community, events, market, groups, maintenance, security, rewards, admin, profile, notifications };
     await (pages[state.page] || home)(main);
-  } catch (e) { main.innerHTML = `<h1>Unable to load</h1><p class="error">${esc(e.message)}</p>`; }
+  } catch (e) {
+    if (e instanceof SessionError || !state.user?.token) { render(); return; }
+    if (main) main.innerHTML = `<h1>Unable to load</h1><p class="error">${esc(e.message)}</p>`;
+  }
 }
 
 function greeting() {
@@ -146,9 +216,8 @@ async function home(main) {
   const pending = tickets.filter(t => t.status !== "Resolved" && t.status !== "Cancelled").length;
   const first = dash.fullName.split(" ")[0];
   const actions = [
-    ["community", "New Post", "＋", "#dbeafe"], ["events", "Events", "📅", "#eaf6ee"],
-    ["market", "Marketplace", "🛍", "#ffedd5"], ["groups", "Study Groups", "👥", "#ede9fe"],
-    ["maintenance", "Maintenance", "🔧", "#fee2e2"], ["rewards", "Rewards", "🎁", "#fef3c7"]
+    ["community", "New Post"], ["events", "Events"], ["market", "Marketplace"],
+    ["groups", "Study Groups"], ["maintenance", "Maintenance"], ["rewards", "Rewards"]
   ].filter(a => (navByRole[state.user.role] || []).some(n => n[0] === a[0]));
   const canSeeFeed = ["Student", "Admin"].includes(state.user.role);
 
@@ -164,7 +233,7 @@ async function home(main) {
       <div class="stat-card"><span class="muted">Maintenance</span><b>${pending} Pending</b></div>
     </div>
     ${actions.length ? `<div class="section-head"><h2>Quick Actions</h2></div>
-    <div class="actions">${actions.map(a => `<button class="action" data-go="${a[0]}"><div class="ico" style="background:${a[3]}">${a[2]}</div>${a[1]}</button>`).join("")}</div>` : ""}
+    <div class="actions">${actions.map(a => `<button class="action" data-go="${a[0]}"><div class="ico">${icon(a[0])}</div>${a[1]}</button>`).join("")}</div>` : ""}
     ${events.length ? `<div class="section-head"><h2>Upcoming Events</h2><button class="link" data-go="events">View all</button></div>
     <div class="grid-3 mb">${events.slice(0, 3).map(eventCard).join("")}</div>` : ""}
     ${canSeeFeed && posts.length ? `<div class="section-head"><h2>Recent Posts</h2><button class="link" data-go="community">View all</button></div>
@@ -177,9 +246,9 @@ async function home(main) {
 }
 
 function eventCard(e) {
-  const art = e.category === "Sports" ? "orange" : e.category === "Academic" ? "green" : "";
+  const art = e.category === "Sports" || e.category === "Cultural" ? "warm" : "";
   return `<div class="card" style="padding:0;overflow:hidden">
-    <div class="event-art ${art}">📅</div>
+    <div class="event-art ${art}">${icon("events")}</div>
     <div class="event-body">
       <span class="tag ${tagClass(e.category)}">${esc(e.category)}</span>
       ${e.isFeatured ? ` <span class="tag yellow">Featured</span>` : ""}
@@ -281,7 +350,7 @@ async function market(main) {
     </div>
     <div class="pills">${["All", "Textbooks", "Electronics", "Furniture", "Clothing", "Food", "Services", "Other"].map(f => `<button class="pill ${state.filter === f ? "active" : ""}" data-filter="${f}">${f}</button>`).join("")}</div>
     <div class="grid-3">${filtered.map(i => `<div class="card" style="padding:0;overflow:hidden">
-      <div class="event-art">📦</div>
+      <div class="event-art">${icon("market")}</div>
       <div class="event-body">
         <div class="between"><h3 style="margin:0">${esc(i.title)}</h3><span class="price">${i.price === 0 ? "FREE" : "R" + i.price}</span></div>
         <p class="muted">${esc(i.description)}</p>
@@ -316,7 +385,7 @@ async function groups(main) {
       <button class="pill ${state.filter === "Mine" ? "active" : ""}" data-filter="Mine">My Groups (${items.filter(g => g.isMember).length})</button>
     </div>
     <div class="grid-3">${mine.map(g => `<div class="card">
-      <div class="icon-box" style="background:#fff4e8">📚</div>
+      <div class="icon-box">${icon("groups")}</div>
       <div class="muted">${esc(g.topic)} · ${esc(g.courseCode)}</div>
       <h3>${esc(g.name)}</h3>
       <p class="muted">${esc(g.description)}</p>
@@ -386,7 +455,7 @@ async function security(main) {
     main.innerHTML = `
       <div class="page-head"><div><h1>Security</h1><p>Report a visitor, noise issue, or emergency.</p></div></div>
       <div class="grid-2">
-        <div class="card"><h3>Panic button</h3><p class="muted">Your room ${esc(state.user.room || "")} will be sent to security.</p><button class="btn" id="panic" style="background:#dc2626">Send panic alert</button><p id="p-msg"></p></div>
+        <div class="card"><h3>Panic button</h3><p class="muted">Your room ${esc(state.user.room || "")} will be sent to security.</p><button class="btn danger" id="panic">Send panic alert</button><p id="p-msg"></p></div>
         <div class="card"><h3>Noise complaint</h3>
           <label>Location<input id="n-loc" /></label><label>What is happening?<input id="n-desc" /></label>
           <label><input id="n-anon" type="checkbox" checked /> Report anonymously</label>
@@ -449,7 +518,7 @@ async function rewards(main) {
   const filtered = state.filter === "All" ? items : items.filter(r => r.category === state.filter);
   main.innerHTML = `
     <div class="balance">
-      <div><small>Your Reward Balance</small><h1 style="margin:8px 0;color:#fff">${state.user.points} points</h1><p>Earn points by attending events, posting and helping others.</p></div>
+      <div><small>Your reward balance</small><h1 style="margin:8px 0">${state.user.points} points</h1><p>Earn points by attending events, posting and helping others.</p></div>
       <div class="row"><div class="metric"><b>${items.filter(r => state.user.points >= r.pointsCost).length}</b><div>Redeemable</div></div>
       <div class="metric"><b>${items.length}</b><div>Total Rewards</div></div></div>
     </div>
@@ -463,7 +532,7 @@ async function rewards(main) {
     <div class="pills">${["All", "Food", "Merchandise", "Services", "Experiences", "Discounts"].map(f => `<button class="pill ${state.filter === f ? "active" : ""}" data-filter="${f}">${f}</button>`).join("")}</div>
     <div class="grid-3">${filtered.map(r => {
       const need = r.pointsCost - state.user.points;
-      return `<div class="card"><div class="icon-box" style="background:var(--mint)">🎁</div><h3>${esc(r.name)}</h3><p class="muted">${esc(r.description)}</p>
+      return `<div class="card"><div class="icon-box">${icon("rewards")}</div><h3>${esc(r.name)}</h3><p class="muted">${esc(r.description)}</p>
         <p><span class="tag green">${r.pointsCost} pts</span> <span class="muted">${r.stock} left</span></p>
         ${state.user.role === "Student" ? (need > 0 ? `<button class="btn wide" disabled>Need ${need} more pts</button>` : `<button class="btn wide redeem" data-id="${r.id}" data-cost="${r.pointsCost}">Redeem</button>`) : ""}
       </div>`;
@@ -503,12 +572,12 @@ async function admin(main) {
       <button class="pill ${tab === "announcements" ? "active" : ""}" data-tab="announcements">Announcements</button>
     </div>
     ${tab === "overview" ? `<div class="admin-metrics">
-      ${metric("Total Residents", analytics.students, "#dbeafe", "👥")}
-      ${metric("Maintenance Requests", analytics.openTickets, "#ffedd5", "🔧")}
-      ${metric("Events Created", events.length, "#eaf6ee", "📅")}
-      ${metric("Community Posts", posts.length, "#ede9fe", "↗")}
-      ${metric("Marketplace Listings", market.length, "#fce7f3", "🛍")}
-      ${metric("Active Rewards", rewards.length, "#fef3c7", "🎁")}
+      ${metric("Total Residents", analytics.students, "groups")}
+      ${metric("Maintenance Requests", analytics.openTickets, "maintenance")}
+      ${metric("Events Created", events.length, "events")}
+      ${metric("Community Posts", posts.length, "community")}
+      ${metric("Marketplace Listings", market.length, "market")}
+      ${metric("Active Rewards", rewards.length, "rewards")}
     </div>` : tab === "residents" ? users.map(u => `<div class="card mb between"><div><b>${esc(u.fullName)}</b><div class="muted">${esc(u.email)}${u.room ? " · Room " + esc(u.room) : ""}</div></div>
       <div><span class="tag ${tagClass(u.role)}">${esc(u.isActive ? u.role : "Inactive")}</span>
       <button class="btn ghost act" data-id="${u.id}" data-on="${u.isActive}">${u.isActive ? "Deactivate" : "Activate"}</button></div></div>`).join("")
@@ -521,7 +590,7 @@ async function admin(main) {
     admin(main);
   };
 }
-const metric = (label, n, bg, ico) => `<div class="card"><div class="icon-box" style="background:${bg}">${ico}</div><b style="font-size:28px">${n}</b><div class="muted">${label}</div></div>`;
+const metric = (label, n, name) => `<div class="card"><div class="icon-box">${icon(name)}</div><b>${n}</b><div class="muted">${label}</div></div>`;
 
 async function notifications(main) {
   const items = await api("/api/notifications");
@@ -537,11 +606,11 @@ function profile(main) {
       <div class="profile-hero">
         <div class="big">${initials}</div>
         <div><h2 style="margin:0">${esc(state.user.fullName)}</h2><p class="muted">${esc(state.user.email)}</p>
-        <span class="tag purple">${esc(state.user.role)}</span></div>
+        <span class="tag green">${esc(state.user.role)}</span></div>
       </div>
       <div class="card" style="background:#f7f8f6;margin-top:20px"><b>${state.user.points} points</b><div class="muted">Reward balance</div></div>
     </div>
-    <button class="card" id="logout2" style="width:100%;text-align:left;color:#dc2626;border:1px solid var(--line)">Sign out of ResLink</button>`;
+    <button class="card signout-card" id="logout2">Sign out of ResLink</button>`;
   document.getElementById("logout2").onclick = () => { save(null); render(); };
 }
 

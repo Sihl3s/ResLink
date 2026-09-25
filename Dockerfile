@@ -1,3 +1,4 @@
+# Multi-stage image so Render can build and run the ASP.NET Core API (Render, 2025; Microsoft, 2025a).
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 COPY backend/ResLink.Api/ResLink.Api.csproj backend/ResLink.Api/
