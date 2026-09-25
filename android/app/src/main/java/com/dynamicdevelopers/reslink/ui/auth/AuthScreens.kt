@@ -1,5 +1,6 @@
 package com.dynamicdevelopers.reslink.ui.auth
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DropdownMenuItem
@@ -25,9 +27,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.dynamicdevelopers.reslink.R
 import com.dynamicdevelopers.reslink.data.ResidenceDto
 import com.dynamicdevelopers.reslink.data.ResLinkApi
 import com.dynamicdevelopers.reslink.data.StaffRegisterRequest
@@ -44,6 +48,17 @@ import com.dynamicdevelopers.reslink.ui.theme.Ink
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
+// The same logo file used on the web sign-in screen (Android Developers, 2025a).
+@Composable
+private fun BrandLockup() {
+    Image(
+        painter = painterResource(R.drawable.reslink_logo),
+        contentDescription = "ResLink",
+        modifier = Modifier.size(56.dp)
+    )
+    Text("ResLink", color = Forest, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+}
+
 @Composable
 fun LoginScreen(
     api: ResLinkApi,
@@ -59,7 +74,7 @@ fun LoginScreen(
     val scope = rememberCoroutineScope()
 
     Column(Modifier.fillMaxSize().padding(24.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.Center) {
-        Text("ResLink", color = Forest, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+        BrandLockup()
         Text("Student Living", color = Ink, fontSize = 30.sp, fontWeight = FontWeight.Bold)
         Text("Sign in and the app opens the dashboard for your role.", color = Muted, modifier = Modifier.padding(top = 8.dp, bottom = 24.dp))
         ResCard {
@@ -113,6 +128,7 @@ fun StudentRegisterScreen(api: ResLinkApi, session: SessionStore, onDone: (Strin
 
     Column(Modifier.fillMaxSize().padding(24.dp).verticalScroll(rememberScrollState())) {
         TextButton(onClick = onBack) { Text("Back", color = Forest) }
+        BrandLockup()
         Text("Student sign-up", color = Ink, fontSize = 28.sp, fontWeight = FontWeight.Bold)
         Text("Residence, room and student number are required.", color = Muted, modifier = Modifier.padding(bottom = 16.dp))
         ResField(fullName, { fullName = it }, "Full name")
@@ -192,6 +208,7 @@ fun StaffRegisterScreen(api: ResLinkApi, session: SessionStore, onDone: (String)
 
     Column(Modifier.fillMaxSize().padding(24.dp).verticalScroll(rememberScrollState())) {
         TextButton(onClick = onBack) { Text("Back", color = Forest) }
+        BrandLockup()
         Text("Staff sign-up", color = Ink, fontSize = 28.sp, fontWeight = FontWeight.Bold)
         Text("Admins, security and maintenance need the staff access code.", color = Muted, modifier = Modifier.padding(bottom = 16.dp))
         ResField(fullName, { fullName = it }, "Full name")

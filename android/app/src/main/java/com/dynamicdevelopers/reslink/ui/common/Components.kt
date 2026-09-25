@@ -1,5 +1,7 @@
 package com.dynamicdevelopers.reslink.ui.common
 
+// Shared cards and fields use the ivory, white, and forest-green palette (Android Developers, 2025b).
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -42,9 +44,9 @@ fun ResCard(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(18.dp))
             .background(CardWhite)
-            .border(1.dp, Color(0xFFE6E8E6), RoundedCornerShape(16.dp))
+            .border(1.dp, Color(0xFFE7E2D8), RoundedCornerShape(18.dp))
             .padding(16.dp),
         content = content
     )
@@ -68,7 +70,7 @@ fun ResField(
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = Forest,
-            unfocusedBorderColor = Color(0xFFE6E8E6),
+            unfocusedBorderColor = Color(0xFFE7E2D8),
             focusedLabelColor = Forest,
             cursorColor = Forest
         )
@@ -123,6 +125,6 @@ fun StatusChip(text: String) {
 @Composable
 fun ErrorText(message: String?) {
     if (!message.isNullOrBlank()) {
-        Text(message, color = Color(0xFFDC2626), modifier = Modifier.padding(top = 8.dp))
+        Text(message, color = Color(0xFF9F2D2D), modifier = Modifier.padding(top = 8.dp))
     }
 }

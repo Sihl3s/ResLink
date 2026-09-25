@@ -23,7 +23,7 @@ The same API and accounts work in a local browser or in Android Studio. The emul
 
 ResLink is a digital platform for student accommodation. Students, residence administrators, security personnel, and maintenance teams share one application backed by a C# web API. Each role has its own sign-up path, home screen, and permissions.
 
-The prototype can be opened in a web browser or in the Android app. Both use the same API and the same demo accounts. The interface is a light, high-whitespace layout with forest-green ResLink branding. Each role sees a different menu and home screen.
+The prototype can be opened in a web browser or in the Android app. Both use the same API and the same demo accounts. The interface is an ivory and white layout with the forest-green ResLink logo in the sidebar and on the sign-in screen. Each role sees a different menu and home screen. On a phone the menu moves to a bottom bar.
 
 ## Purpose
 
@@ -157,30 +157,36 @@ ResLink/
 
 ## References
 
-Android Developers (2025a) *Jetpack Compose*. Available at: https://developer.android.com/compose (Accessed: 17 August 2026).
+Android Developers (2025a) *Jetpack Compose*. Available at: https://developer.android.com/compose (Accessed: 25 September 2026).
 
-Android Developers (2025b) *Material Design 3 in Compose*. Available at: https://developer.android.com/develop/ui/compose/designsystems/material3 (Accessed: 17 August 2026).
+Android Developers (2025b) *Material Design 3 in Compose*. Available at: https://developer.android.com/develop/ui/compose/designsystems/material3 (Accessed: 25 September 2026).
 
-MDN (2025) *Using the Fetch API*. Available at: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch (Accessed: 17 August 2026).
+Google Fonts (2026a) *Fraunces*. Available at: https://fonts.google.com/specimen/Fraunces (Accessed: 25 September 2026).
 
-Microsoft (2024) *PasswordHasher of ASP.NET Core Identity*. Available at: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.passwordhasher-1 (Accessed: 17 August 2026).
+Google Fonts (2026b) *Source Sans 3*. Available at: https://fonts.google.com/specimen/Source+Sans+3 (Accessed: 25 September 2026).
 
-Microsoft (2025a) *Overview of ASP.NET Core*. Available at: https://learn.microsoft.com/aspnet/core/introduction-to-aspnet-core?view=aspnetcore-9.0 (Accessed: 17 August 2026).
+Material Design (2025) *Icons*. Available at: https://m3.material.io/styles/icons/overview (Accessed: 25 September 2026).
 
-Microsoft (2025b) *Authentication and authorization in ASP.NET Core*. Available at: https://learn.microsoft.com/aspnet/core/fundamentals/minimal-apis/security?view=aspnetcore-9.0 (Accessed: 17 August 2026).
+MDN (2025) *Using the Fetch API*. Available at: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch (Accessed: 25 September 2026).
 
-Microsoft (2025c) *SQLite EF Core database provider*. Available at: https://learn.microsoft.com/ef/core/providers/sqlite/ (Accessed: 17 August 2026).
+Microsoft (2024) *PasswordHasher of ASP.NET Core Identity*. Available at: https://learn.microsoft.com/dotnet/api/microsoft.aspnetcore.identity.passwordhasher-1 (Accessed: 25 September 2026).
 
-Microsoft (2025d) *Get started with Swashbuckle and ASP.NET Core*. Available at: https://learn.microsoft.com/aspnet/core/tutorials/getting-started-with-swashbuckle (Accessed: 17 August 2026).
+Microsoft (2025a) *Overview of ASP.NET Core*. Available at: https://learn.microsoft.com/aspnet/core/introduction-to-aspnet-core?view=aspnetcore-9.0 (Accessed: 25 September 2026).
 
-Microsoft (2025e) *Role-based authorization in ASP.NET Core*. Available at: https://learn.microsoft.com/aspnet/core/security/authorization/roles?view=aspnetcore-9.0 (Accessed: 17 August 2026).
+Microsoft (2025b) *Authentication and authorization in ASP.NET Core*. Available at: https://learn.microsoft.com/aspnet/core/fundamentals/minimal-apis/security?view=aspnetcore-9.0 (Accessed: 25 September 2026).
 
-OpenAPI Initiative (2024) *OpenAPI Specification*. Available at: https://spec.openapis.org/oas/latest.html (Accessed: 17 August 2026).
+Microsoft (2025c) *SQLite EF Core database provider*. Available at: https://learn.microsoft.com/ef/core/providers/sqlite/ (Accessed: 25 September 2026).
 
-OWASP (2023) *Authentication cheat sheet*. Available at: https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html (Accessed: 17 August 2026).
+Microsoft (2025d) *Get started with Swashbuckle and ASP.NET Core*. Available at: https://learn.microsoft.com/aspnet/core/tutorials/getting-started-with-swashbuckle (Accessed: 25 September 2026).
 
-Render (2025) *Docker on Render*. Available at: https://render.com/docs/docker (Accessed: 17 August 2026).
+Microsoft (2025e) *Role-based authorization in ASP.NET Core*. Available at: https://learn.microsoft.com/aspnet/core/security/authorization/roles?view=aspnetcore-9.0 (Accessed: 25 September 2026).
 
-SQLite Consortium (2025) *About SQLite*. Available at: https://www.sqlite.org/about.html (Accessed: 17 August 2026).
+OpenAPI Initiative (2024) *OpenAPI Specification*. Available at: https://spec.openapis.org/oas/latest.html (Accessed: 25 September 2026).
 
-Square (2024) *Retrofit*. Available at: https://square.github.io/retrofit/ (Accessed: 17 August 2026).
+OWASP (2023) *Authentication cheat sheet*. Available at: https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html (Accessed: 25 September 2026).
+
+Render (2025) *Docker on Render*. Available at: https://render.com/docs/docker (Accessed: 25 September 2026).
+
+SQLite Consortium (2025) *About SQLite*. Available at: https://www.sqlite.org/about.html (Accessed: 25 September 2026).
+
+Square (2024) *Retrofit*. Available at: https://square.github.io/retrofit/ (Accessed: 25 September 2026).
