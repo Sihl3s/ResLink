@@ -80,8 +80,8 @@ const fmtDate = iso => {
   return d.toLocaleString(undefined, { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
 };
 
-function brand(light) {
-  return `<div class="brand-row${light ? " light" : ""}"><img src="logo.png" alt="ResLink" /><div><strong>ResLink</strong><span>Student Living</span></div></div>`;
+function brand() {
+  return `<div class="brand-row"><img src="reslink.jpeg" alt="ResLink" /></div>`;
 }
 
 function navButtons(nav) {
@@ -107,15 +107,15 @@ async function render() {
   app.innerHTML = `
     <div class="shell">
       <header class="topbar">
-        ${brand(true)}
+        ${brand()}
         <button class="menu-btn" id="open-menu" aria-label="Open menu">${icon("more")}</button>
       </header>
       ${state.menu ? `<div class="scrim" id="scrim"></div>` : ""}
       <aside class="sidebar${state.menu ? " open" : ""}">
-        ${brand(true)}
+        ${brand()}
         <nav class="nav">${navButtons(nav)}</nav>
         <div class="side-foot">
-          <div class="user-line"><div class="avatar">${initial(state.user.fullName)}</div><div><b>${esc(state.user.fullName)}</b><small>${esc(state.user.role)}</small></div></div>
+          <div class="user-line"><div class="avatar">${initial(state.user.fullName)}</div><div class="user-meta"><b>${esc(state.user.fullName)}</b><small>${esc(state.user.role)}</small></div></div>
           <button class="signout" id="logout">Sign out</button>
         </div>
       </aside>
@@ -139,11 +139,10 @@ async function render() {
 function authHtml() {
   return `<div class="auth-wrap">
     <section class="auth-hero">
-      <img class="auth-mark" src="logo.png" alt="ResLink" />
+      <img class="auth-mark" src="reslink.jpeg" alt="ResLink" />
       <div><h2>Residence life, in one place.</h2><p>Community, safety, and maintenance for students and staff.</p></div>
     </section>
     <div class="auth-panel"><div class="auth-card">
-    ${brand()}
     <h1>Welcome back</h1>
     <p class="lead">Sign in to open the dashboard for your role.</p>
     <label>Email<input id="email" type="email" value="student@reslink.app" /></label>
@@ -245,10 +244,23 @@ async function home(main) {
   main.querySelectorAll("[data-go]").forEach(b => b.onclick = () => { state.page = b.dataset.go; render(); });
 }
 
+// Seeded events use saved stock photos so the cards do not depend on another host (Unsplash, 2026).
+function eventPhoto(e) {
+  const title = (e.title || "").toLowerCase();
+  if (title.includes("movie")) return "events/movie.jpg";
+  if (title.includes("braai")) return "events/braai.jpg";
+  if (title.includes("football")) return "events/football.jpg";
+  if (title.includes("study") || title.includes("exam")) return "events/study.jpg";
+  if (title.includes("yoga")) return "events/yoga.jpg";
+  if (title.includes("heritage")) return "events/heritage.jpg";
+  if (title.includes("meeting")) return "events/meeting.jpg";
+  const byCategory = { Social: "events/braai.jpg", Sports: "events/football.jpg", Academic: "events/study.jpg", Cultural: "events/heritage.jpg", Meeting: "events/meeting.jpg" };
+  return byCategory[e.category] || "events/meeting.jpg";
+}
+
 function eventCard(e) {
-  const art = e.category === "Sports" || e.category === "Cultural" ? "warm" : "";
   return `<div class="card" style="padding:0;overflow:hidden">
-    <div class="event-art ${art}">${icon("events")}</div>
+    <img class="event-photo" src="${eventPhoto(e)}" alt="" />
     <div class="event-body">
       <span class="tag ${tagClass(e.category)}">${esc(e.category)}</span>
       ${e.isFeatured ? ` <span class="tag yellow">Featured</span>` : ""}
@@ -605,8 +617,7 @@ function profile(main) {
     <div class="card mb">
       <div class="profile-hero">
         <div class="big">${initials}</div>
-        <div><h2 style="margin:0">${esc(state.user.fullName)}</h2><p class="muted">${esc(state.user.email)}</p>
-        <span class="tag green">${esc(state.user.role)}</span></div>
+        <div class="who"><h2 style="margin:0">${esc(state.user.fullName)}</h2><small>${esc(state.user.role)}</small><p class="muted">${esc(state.user.email)}</p></div>
       </div>
       <div class="card" style="background:#f7f8f6;margin-top:20px"><b>${state.user.points} points</b><div class="muted">Reward balance</div></div>
     </div>

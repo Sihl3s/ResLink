@@ -23,7 +23,7 @@ The same API and accounts work in a local browser or in Android Studio. The emul
 
 ResLink is a digital platform for student accommodation. Students, residence administrators, security personnel, and maintenance teams share one application backed by a C# web API. Each role has its own sign-up path, home screen, and permissions.
 
-The prototype can be opened in a web browser or in the Android app. Both use the same API and the same demo accounts. The interface is an ivory and white layout with the forest-green ResLink logo in the sidebar and on the sign-in screen. Each role sees a different menu and home screen. On a phone the menu moves to a bottom bar.
+The prototype can be opened in a web browser or in the Android app. Both use the same API and the same demo accounts. The interface uses the ResLink house-and-chain logo, Nunito type, and a white sidebar. The account role sits under the person's name. Event cards use stock photos. Each role sees a different menu and home screen. On a phone the menu moves to a bottom bar.
 
 ## Purpose
 
@@ -161,9 +161,9 @@ Android Developers (2025a) *Jetpack Compose*. Available at: https://developer.an
 
 Android Developers (2025b) *Material Design 3 in Compose*. Available at: https://developer.android.com/develop/ui/compose/designsystems/material3 (Accessed: 25 September 2026).
 
-Google Fonts (2026a) *Fraunces*. Available at: https://fonts.google.com/specimen/Fraunces (Accessed: 25 September 2026).
+Google Fonts (2026) *Nunito*. Available at: https://fonts.google.com/specimen/Nunito (Accessed: 25 September 2026).
 
-Google Fonts (2026b) *Source Sans 3*. Available at: https://fonts.google.com/specimen/Source+Sans+3 (Accessed: 25 September 2026).
+Unsplash (2026) *License*. Available at: https://unsplash.com/license (Accessed: 25 September 2026).
 
 Material Design (2025) *Icons*. Available at: https://m3.material.io/styles/icons/overview (Accessed: 25 September 2026).
 

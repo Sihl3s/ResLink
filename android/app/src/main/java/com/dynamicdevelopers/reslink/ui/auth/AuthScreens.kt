@@ -2,6 +2,8 @@ package com.dynamicdevelopers.reslink.ui.auth
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -52,11 +54,10 @@ import retrofit2.HttpException
 @Composable
 private fun BrandLockup() {
     Image(
-        painter = painterResource(R.drawable.reslink_logo),
+        painter = painterResource(R.drawable.reslink_mark),
         contentDescription = "ResLink",
-        modifier = Modifier.size(56.dp)
+        modifier = Modifier.size(168.dp).clip(RoundedCornerShape(16.dp))
     )
-    Text("ResLink", color = Forest, fontWeight = FontWeight.Bold, fontSize = 18.sp)
 }
 
 @Composable
@@ -75,8 +76,7 @@ fun LoginScreen(
 
     Column(Modifier.fillMaxSize().padding(24.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.Center) {
         BrandLockup()
-        Text("Student Living", color = Ink, fontSize = 30.sp, fontWeight = FontWeight.Bold)
-        Text("Sign in and the app opens the dashboard for your role.", color = Muted, modifier = Modifier.padding(top = 8.dp, bottom = 24.dp))
+        Text("Sign in and the app opens the dashboard for your role.", color = Muted, modifier = Modifier.padding(top = 12.dp, bottom = 24.dp))
         ResCard {
             ResField(email, { email = it }, "Email")
             Spacer(Modifier.height(12.dp))
