@@ -28,18 +28,19 @@ img { display: block; max-width: 100%; }
   grid-template-columns: minmax(280px, 0.9fr) minmax(320px, 1.1fr);
 }
 .auth-hero {
-  background: #10261c;
+  background: #04180f;
   color: #f4f7f5;
   padding: 48px 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
+  text-align: center;
   gap: 28px;
 }
-.auth-hero h2 { margin: 0 0 8px; font-size: 36px; line-height: 1.15; color: #fff; }
-.auth-hero p { margin: 0; max-width: 28ch; color: rgba(244, 247, 245, 0.78); font-size: 17px; }
-.auth-mark { width: min(280px, 70%); height: auto; border-radius: 20px; }
+.auth-hero h2 { margin: 0 auto 8px; font-size: 36px; line-height: 1.15; color: #fff; max-width: 16ch; }
+.auth-hero p { margin: 0 auto; max-width: 28ch; color: rgba(244, 247, 245, 0.78); font-size: 17px; }
+.auth-mark { width: min(300px, 68%); height: auto; border-radius: 0; }
 .auth-panel { display: grid; place-items: center; padding: 40px 24px; }
 .auth-card { width: min(460px, 100%); background: var(--card); border: 1px solid var(--line); border-radius: 24px; padding: 32px 28px 28px; box-shadow: var(--shadow); }
 .brand-row { display: flex; align-items: center; }
