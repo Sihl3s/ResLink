@@ -113,7 +113,18 @@ app.UseSwaggerUI(options =>
 });
 
 app.UseDefaultFiles();
-app.UseStaticFiles();
+// Revalidate the browser files on each visit so an old saved page is not kept (MDN, 2025).
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = context =>
+    {
+        var file = context.File.Name;
+        if (file is "index.html" or "app.js" or "app.css")
+        {
+            context.Context.Response.Headers.CacheControl = "no-cache, must-revalidate";
+        }
+    }
+});
 app.UseCors("Client");
 app.UseAuthentication();
 app.UseAuthorization();
